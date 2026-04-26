@@ -21,23 +21,25 @@ public class WatchCommand implements Command {
 
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 
-        //: If not exactly one argument passed, throw error
-        //: WATCH <key>
-        if(command.size() != 2) {
+        //: If less than two arguments passed, throw error
+        //: WATCH <key1> ... <keyN>
+        if(command.size() < 2) {
             return RespWriter.writeString(new RespError("ERR wrong number of arguments for 'watch' command"));
         }
 
-        //: Extract key from command
-        String key = ((RespBulkString) command.get(1)).value;
+        //: Iterate over keys from command
+        for(int i = 1; i < command.size(); i++){
+            String key = ((RespBulkString) command.get(i)).value;
 
-        //: if key don't exist in store, map it to null in watched keys
-        if(!dataStore.store.containsKey(key)){
-            clientContext.watchedKeys.put(key, null);
-            return RespWriter.writeString(new RespSimpleString("OK"));
+            //: if key don't exist in store, map it to null in watched keys
+            if(!dataStore.store.containsKey(key)){
+                clientContext.watchedKeys.put(key, null);
+            }
+
+            //: if key exist in store, map it to object it stored
+            clientContext.watchedKeys.put(key, dataStore.store.get(key));
         }
 
-        //: if key exist in store, map it to object it stored
-        clientContext.watchedKeys.put(key, dataStore.store.get(key));
         return RespWriter.writeString(new RespSimpleString("OK"));
     }
 }
