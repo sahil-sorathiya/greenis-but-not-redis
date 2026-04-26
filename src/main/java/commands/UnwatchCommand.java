@@ -12,7 +12,6 @@ public class UnwatchCommand implements Command {
     @Override
     public String execute(Context context) throws IOException {
         ClientContext clientContext = context.clientContext;
-        DataStore dataStore = context.serverContext.dataStore;
 
         //: Check for transaction
         if(clientContext.transactionFlag) {

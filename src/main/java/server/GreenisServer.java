@@ -16,8 +16,8 @@ public class GreenisServer {
     ServerContext serverContext;
     public GreenisServer() {}
 
-    public void init(int port) throws IOException {
-        this.serverContext = new ServerContext(port);
+    public void init(int port, String dir, String dbFileName) throws IOException {
+        this.serverContext = new ServerContext(port, dir, dbFileName);
     }
 
     public void close() throws IOException {
