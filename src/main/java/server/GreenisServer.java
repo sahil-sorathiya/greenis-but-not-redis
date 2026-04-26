@@ -172,9 +172,19 @@ public class GreenisServer {
         if (commandName.equalsIgnoreCase("PING")) {
             return new PingCommand().execute(context);
         }
+        else if(commandName.equalsIgnoreCase("ECHO")){
+            return new EchoCommand().execute(context);
+        }
+        else if(commandName.equalsIgnoreCase("SET")){
+//            return new SetCommand().execute(context);
+        }
+        else if(commandName.equalsIgnoreCase("GET")){
+//            return new GetCommand().execute(context);
+        }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }
+        return null;
     }
 
 
