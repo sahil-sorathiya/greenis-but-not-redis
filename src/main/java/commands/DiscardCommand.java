@@ -24,9 +24,10 @@ public class DiscardCommand implements Command {
             return RespWriter.writeString(new RespError("ERR DISCARD without MULTI"));
         }
 
-        //: Reset flag and queue
+        //: Reset flag, queue and watch keys
         clientContext.transactionFlag = false;
         clientContext.commandQueue.clear();
+        clientContext.watchedKeys.clear();
 
         //: Respond with OK
         return RespWriter.writeString(new RespSimpleString("OK"));
