@@ -19,17 +19,20 @@ public class ExecCommand implements Command {
 
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 
+        System.out.println("here");
         //: If not exactly one argument passed, throw error
         //: EXEC
         if(command.size() != 1) {
             return RespWriter.writeString(new RespError("EXECABORT Transaction discarded because of: wrong number of arguments for 'exec' command"));
         }
 
+        System.out.println("here");
         //: Exec without transaction start
         if(!clientContext.transactionFlag){
             return RespWriter.writeString(new RespError("ERR EXEC without MULTI"));
         }
 
+        System.out.println("here");
         //: Run all commands from queue one by one and store responses
         ArrayList<RespObject> responses = new ArrayList<>();
         for(RespArray cmd: clientContext.commandQueue){
@@ -39,6 +42,8 @@ public class ExecCommand implements Command {
             RespObject r = parser.parse();
             responses.add(r);
         }
+
+        System.out.println(responses.size());
 
         //: Reset flag and queue
         clientContext.transactionFlag = false;

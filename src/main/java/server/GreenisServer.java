@@ -86,7 +86,8 @@ public class GreenisServer {
             client.configureBlocking(false);
 
             //: Register Selector with Client-Socket channel to watch on event/key for Socket-Read operation
-            client.register(serverContext.selector, SelectionKey.OP_READ);
+            ClientContext clientContext = new ClientContext(client);
+            client.register(serverContext.selector, SelectionKey.OP_READ, clientContext);
         }
         else{
             throw new IOException("Channel is either null or not an instance of ServerSocketChannel");
@@ -105,7 +106,8 @@ public class GreenisServer {
 
             RespArray command = parseCommand(received);
 
-            ClientContext clientContext = new ClientContext(client, command);
+            ClientContext clientContext = (ClientContext) key.attachment();
+            clientContext.currentCommand = command;
             String response = handleCommand(command, clientContext, serverContext);
 
             if(response == null) return;

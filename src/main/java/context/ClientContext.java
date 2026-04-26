@@ -12,9 +12,9 @@ public class ClientContext {
     public boolean transactionFlag;
     public ArrayList<RespArray> commandQueue;
 
-    public ClientContext(SocketChannel client, RespArray currentCommand) {
+    public ClientContext(SocketChannel client) {
         this.client = client;
-        this.currentCommand = currentCommand;
+        this.currentCommand = null;
         this.transactionFlag = false;
         this.commandQueue = new ArrayList<>();
     }
