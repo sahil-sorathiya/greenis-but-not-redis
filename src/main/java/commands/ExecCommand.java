@@ -30,20 +30,27 @@ public class ExecCommand implements Command {
             return RespWriter.writeString(new RespError("ERR EXEC without MULTI"));
         }
 
+        //: Reset flag
+        clientContext.transactionFlag = false;
+
         //: Run all commands from queue one by one and store responses
         ArrayList<RespObject> responses = new ArrayList<>();
-        for(RespArray cmd: clientContext.commandQueue){
+
+        for(RespArray cmd: new ArrayList<>(clientContext.commandQueue)){
+            RespArray temp = clientContext.currentCommand;
+            clientContext.currentCommand = cmd;
+
             String s = GreenisServer.handleCommand(cmd, clientContext, serverContext);
+
+            clientContext.currentCommand = temp;
+
             InputStream in = new ByteArrayInputStream(s.getBytes());
             RespParser parser = new RespParser(in);
             RespObject r = parser.parse();
             responses.add(r);
         }
 
-        System.out.println(responses.size());
-
-        //: Reset flag and queue
-        clientContext.transactionFlag = false;
+        //: Reset queue
         clientContext.commandQueue.clear();
 
         //: Return responses
