@@ -13,6 +13,12 @@ public class GetCommand implements Command {
     public String execute(Context context) throws IOException {
         ClientContext clientContext = context.clientContext;
         DataStore dataStore = context.serverContext.dataStore;
+
+        //: Check for transaction
+        if(clientContext.transactionFlag) {
+            clientContext.commandQueue.add(clientContext.currentCommand);
+            return RespWriter.writeString(new RespSimpleString("OK"));
+        }
         
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 

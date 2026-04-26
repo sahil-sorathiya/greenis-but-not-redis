@@ -106,7 +106,7 @@ public class GreenisServer {
             RespArray command = parseCommand(received);
 
             ClientContext clientContext = new ClientContext(client, command);
-            String response = handleCommand(command, clientContext);
+            String response = handleCommand(command, clientContext, serverContext);
 
             if(response == null) return;
 
@@ -161,7 +161,7 @@ public class GreenisServer {
         return (RespArray) r;
     }
 
-    private String handleCommand(RespArray command, ClientContext clientContext) throws IOException {
+    public static String handleCommand(RespArray command, ClientContext clientContext, ServerContext serverContext) throws IOException {
         if(command == null){
             return null;
         }
@@ -183,6 +183,15 @@ public class GreenisServer {
         }
         else if(commandName.equalsIgnoreCase("INCR")){
             return new IncrCommand().execute(context);
+        }
+        else if(commandName.equalsIgnoreCase("MULTI")){
+            return new MultiCommand().execute(context);
+        }
+        else if(commandName.equalsIgnoreCase("EXEC")){
+            return new ExecCommand().execute(context);
+        }
+        else if(commandName.equalsIgnoreCase("DISCARD")){
+            return new DiscardCommand().execute(context);
         }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));

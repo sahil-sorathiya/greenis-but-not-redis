@@ -15,6 +15,12 @@ public class SetCommand implements Command {
         ClientContext clientContext = context.clientContext;
         DataStore dataStore = context.serverContext.dataStore;
 
+        //: Check for transaction
+        if(clientContext.transactionFlag) {
+            clientContext.commandQueue.add(clientContext.currentCommand);
+            return RespWriter.writeString(new RespSimpleString("OK"));
+        }
+
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 
         //: If not exactly three or five arguments passed, throw error
