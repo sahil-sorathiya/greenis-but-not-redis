@@ -20,6 +20,10 @@ public class MultiCommand implements Command {
             return RespWriter.writeString(new RespError("ERR wrong number of arguments for 'multi' command"));
         }
 
+        if(clientContext.transactionFlag){
+            return RespWriter.writeString(new RespError("ERR MULTI calls can not be nested"));
+        }
+
         //: Set flag
         clientContext.transactionFlag = true;
 

@@ -3,8 +3,8 @@ package commands;
 import context.*;
 import resp.*;
 import server.GreenisServer;
+import store.DataStore;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,7 @@ public class ExecCommand implements Command {
     public String execute(Context context) throws IOException {
         ClientContext clientContext = context.clientContext;
         ServerContext serverContext = context.serverContext;
+        DataStore dataStore = context.serverContext.dataStore;
 
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 
@@ -28,6 +29,24 @@ public class ExecCommand implements Command {
         //: Exec without transaction start
         if(!clientContext.transactionFlag){
             return RespWriter.writeString(new RespError("ERR EXEC without MULTI"));
+        }
+
+        //: Validate "Watched" keys
+        for(String k: clientContext.watchedKeys.keySet()){
+            //: If change found
+            if(clientContext.watchedKeys.get(k) != dataStore.store.get(k)){
+                //: Abort the transaction
+
+                //: Reset flag and queue
+                clientContext.transactionFlag = false;
+                clientContext.commandQueue.clear();
+
+                //: Reset watched keys
+                clientContext.watchedKeys.clear();
+
+                //: Respond with empty array
+                return RespWriter.writeString(new RespArray(null));
+            }
         }
 
         //: Reset flag

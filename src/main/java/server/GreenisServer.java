@@ -195,6 +195,9 @@ public class GreenisServer {
         else if(commandName.equalsIgnoreCase("DISCARD")){
             return new DiscardCommand().execute(context);
         }
+        else if(commandName.equalsIgnoreCase("WATCH")){
+            return new WatchCommand().execute(context);
+        }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }
