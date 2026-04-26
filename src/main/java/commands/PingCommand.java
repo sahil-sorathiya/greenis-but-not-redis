@@ -14,7 +14,7 @@ public class PingCommand implements Command {
         //: Check for transaction
         if(clientContext.transactionFlag) {
             clientContext.commandQueue.add(clientContext.currentCommand);
-            return RespWriter.writeString(new RespSimpleString("OK"));
+            return RespWriter.writeString(new RespSimpleString("QUEUED"));
         }
 
         //: If not exactly one argument passed, throw error
