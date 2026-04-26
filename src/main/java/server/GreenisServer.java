@@ -176,15 +176,15 @@ public class GreenisServer {
             return new EchoCommand().execute(context);
         }
         else if(commandName.equalsIgnoreCase("SET")){
-//            return new SetCommand().execute(context);
+            return new SetCommand().execute(context);
         }
         else if(commandName.equalsIgnoreCase("GET")){
-//            return new GetCommand().execute(context);
+            return new GetCommand().execute(context);
         }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }
-        return null;
+//        return null;
     }
 
 
