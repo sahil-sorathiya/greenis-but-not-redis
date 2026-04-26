@@ -30,20 +30,20 @@ public class ConfigCommand implements Command {
         //: If second argument is "GET"
         if(((RespBulkString)command.get(1)).value.equalsIgnoreCase("GET")){
             //: If third argument is "dir"
-            if(((RespBulkString)command.get(1)).value.equalsIgnoreCase("dir")){
+            if(((RespBulkString)command.get(2)).value.equalsIgnoreCase("dir")){
                 ArrayList<RespObject> response = new ArrayList<>();
                 response.add(command.get(2));
                 response.add(new RespBulkString(serverContext.dir));
                 return RespWriter.writeString(new RespArray(response));
             }
             //: If third argument is "dbfilename"
-            else if(((RespBulkString)command.get(1)).value.equalsIgnoreCase("dbfilename")){
+            else if(((RespBulkString)command.get(2)).value.equalsIgnoreCase("dbfilename")){
                 ArrayList<RespObject> response = new ArrayList<>();
                 response.add(command.get(2));
                 response.add(new RespBulkString(serverContext.dbFileName));
                 return RespWriter.writeString(new RespArray(response));
             }
         }
-        return RespWriter.writeString(new RespArray(null));
+        return RespWriter.writeString(new RespArray(new ArrayList<>()));
     }
 }

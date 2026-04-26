@@ -201,6 +201,9 @@ public class GreenisServer {
         else if(commandName.equalsIgnoreCase("UNWATCH")){
             return new UnwatchCommand().execute(context);
         }
+        else if(commandName.equalsIgnoreCase("CONFIG")){
+            return new ConfigCommand().execute(context);
+        }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }
