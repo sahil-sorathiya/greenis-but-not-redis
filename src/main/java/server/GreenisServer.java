@@ -181,6 +181,9 @@ public class GreenisServer {
         else if(commandName.equalsIgnoreCase("GET")){
             return new GetCommand().execute(context);
         }
+        else if(commandName.equalsIgnoreCase("INCR")){
+            return new IncrCommand().execute(context);
+        }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }

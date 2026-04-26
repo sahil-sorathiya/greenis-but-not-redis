@@ -15,7 +15,7 @@ public class SetCommand implements Command {
         ClientContext clientContext = context.clientContext;
         DataStore dataStore = context.serverContext.dataStore;
 
-        ArrayList<RespObject> command = ((RespArray) clientContext.currentCommand).values;
+        ArrayList<RespObject> command = clientContext.currentCommand.values;
 
         //: If not exactly three or five arguments passed, throw error
         //: SET <key> <value> [<EX/PX>] [<time>]

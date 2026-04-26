@@ -14,7 +14,7 @@ public class GetCommand implements Command {
         ClientContext clientContext = context.clientContext;
         DataStore dataStore = context.serverContext.dataStore;
         
-        ArrayList<RespObject> command = ((RespArray) clientContext.currentCommand).values;
+        ArrayList<RespObject> command = clientContext.currentCommand.values;
 
         //: If not exactly two argument passed, throw error
         //: GET <key>
