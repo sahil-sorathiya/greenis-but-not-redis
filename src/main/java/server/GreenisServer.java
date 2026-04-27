@@ -210,6 +210,9 @@ public class GreenisServer {
         else if(commandName.equalsIgnoreCase("PUBLISH")){
             return new PublishCommand().execute(context);
         }
+        else if(commandName.equalsIgnoreCase("UNSUBSCRIBE")){
+            return new UnsubscribeCommand().execute(context);
+        }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }
