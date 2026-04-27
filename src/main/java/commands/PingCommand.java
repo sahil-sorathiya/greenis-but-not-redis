@@ -27,7 +27,7 @@ public class PingCommand implements Command {
         //: If subscribe-mode is on, respond with RespArray
         if(clientContext.subscribeModeFlag) {
             ArrayList <RespObject> response = new ArrayList<>();
-            response.add(new RespBulkString("PONG"));
+            response.add(new RespBulkString("pong"));
             response.add(new RespBulkString(""));
             return RespWriter.writeString(new RespArray(response));
         }
