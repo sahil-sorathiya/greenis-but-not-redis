@@ -6,6 +6,7 @@ import store.DataStore;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SubscribeCommand implements Command {
 
@@ -33,6 +34,14 @@ public class SubscribeCommand implements Command {
 
         //: Add channel-name in client context
         clientContext.subscribedChannels.add(channelName);
+
+        //: Check for channel existence, if not then create empty one
+        if(!dataStore.channels.containsKey(channelName)){
+            dataStore.channels.put(channelName, new HashSet<>());
+        }
+
+        //: Add this client to channel
+        dataStore.channels.get(channelName).add(clientContext);
 
         //: Set flag
         clientContext.subscribeModeFlag = true;
