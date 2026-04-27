@@ -24,7 +24,7 @@ public class SetCommand implements Command {
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 
         //: If not exactly three or five arguments passed, throw error
-        //: SET <key> <value> [<EX/PX>] [<time>]
+        //: SET <key> <value> [<EX/PX> <time>]
         if(command.size() != 3 && command.size() != 5) {
             return RespWriter.writeString(new RespError("ERR wrong number of arguments for 'set' command"));
         }

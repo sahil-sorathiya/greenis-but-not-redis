@@ -204,6 +204,9 @@ public class GreenisServer {
         else if(commandName.equalsIgnoreCase("CONFIG")){
             return new ConfigCommand().execute(context);
         }
+        else if(commandName.equalsIgnoreCase("SUBSCRIBE")){
+            return new SubscribeCommand().execute(context);
+        }
         else {
             return RespWriter.writeString(new RespError("ERR unknown command " + commandName));
         }
