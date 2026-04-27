@@ -6,7 +6,9 @@ import resp.*;
 import store.DataStore;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PublishCommand implements Command {
     @Override
@@ -35,10 +37,28 @@ public class PublishCommand implements Command {
 
         //: Extract channel-name from command
         String channelName = ((RespBulkString) command.get(1)).value;
+        String message = ((RespBulkString) command.get(2)).value;
 
         //: Check for channel existence, if not then respond with RespInteger 0
         if(!dataStore.channels.containsKey(channelName)){
             return RespWriter.writeString(new RespInteger(0));
+        }
+
+        //: Prepare Response
+        ArrayList <RespObject> temp = new ArrayList<>();
+        temp.add(new RespBulkString("message"));
+        temp.add(new RespBulkString(channelName));
+        temp.add(new RespBulkString(message));
+        String response = RespWriter.writeString(new RespArray(temp));
+
+        //: Send message to all clients
+        for(ClientContext cc: new HashSet<>(dataStore.channels.get(channelName))){
+            ByteBuffer writeBuffer = ByteBuffer.wrap(response.getBytes());
+
+            //: Write until entire response is sent
+            while (writeBuffer.hasRemaining()) {
+                cc.client.write(writeBuffer);
+            }
         }
 
         return RespWriter.writeString(new RespInteger(dataStore.channels.get(channelName).size()));
