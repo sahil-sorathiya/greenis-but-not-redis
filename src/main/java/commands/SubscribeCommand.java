@@ -34,6 +34,8 @@ public class SubscribeCommand implements Command {
         //: Add channel-name in client context
         clientContext.subscribedChannels.add(channelName);
 
+        //: Set flag
+        clientContext.subscribeModeFlag = true;
 
         ArrayList<RespObject> response = new ArrayList<>();
         response.add(new RespBulkString("subscribe"));

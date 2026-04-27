@@ -14,6 +14,7 @@ public class ClientContext {
     public ArrayList<RespArray> commandQueue;
     public HashMap <String, RespObject> watchedKeys;
     public HashSet <String> subscribedChannels;
+    public boolean subscribeModeFlag;
 
     public ClientContext(SocketChannel client) {
         this.client = client;
@@ -22,5 +23,6 @@ public class ClientContext {
         this.commandQueue = new ArrayList<>();
         this.watchedKeys = new HashMap<>();
         this.subscribedChannels = new HashSet<>();
+        this.subscribeModeFlag = false;
     }
 }

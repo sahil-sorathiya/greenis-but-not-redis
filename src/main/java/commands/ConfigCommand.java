@@ -13,6 +13,11 @@ public class ConfigCommand implements Command {
         ClientContext clientContext = context.clientContext;
         ServerContext serverContext = context.serverContext;
 
+        //: Check for subscribe-mode
+        if(clientContext.subscribeModeFlag) {
+            return RespWriter.writeString(new RespError("ERR Can't execute 'config': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context"));
+        }
+
         //: Check for transaction
         if(clientContext.transactionFlag) {
             clientContext.commandQueue.add(clientContext.currentCommand);

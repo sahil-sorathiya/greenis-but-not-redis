@@ -10,7 +10,11 @@ public class MultiCommand implements Command {
     @Override
     public String execute(Context context) throws IOException {
         ClientContext clientContext = context.clientContext;
-        ServerContext serverContext = context.serverContext;
+
+        //: Check for subscribe-mode
+        if(clientContext.subscribeModeFlag) {
+            return RespWriter.writeString(new RespError("ERR Can't execute 'multi': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context"));
+        }
 
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 

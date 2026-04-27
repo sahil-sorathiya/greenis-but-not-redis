@@ -18,6 +18,11 @@ public class ExecCommand implements Command {
         ServerContext serverContext = context.serverContext;
         DataStore dataStore = context.serverContext.dataStore;
 
+        //: Check for subscribe-mode
+        if(clientContext.subscribeModeFlag) {
+            return RespWriter.writeString(new RespError("ERR Can't execute 'exec': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context"));
+        }
+
         ArrayList<RespObject> command = clientContext.currentCommand.values;
 
         //: If not exactly one argument passed, throw error
